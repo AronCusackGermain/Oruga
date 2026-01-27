@@ -18,7 +18,7 @@ class ComentarioViewModel(private val repository: ComentarioRepository) : ViewMo
     val comentarios: StateFlow<List<Comentario>> = _comentarios.asStateFlow()
 
     /**
-     * Cargar comentarios de una publicaciÃ³n
+     * Cargar comentarios de una publicación
      */
     fun cargarComentarios(publicacionId: Int) {
         viewModelScope.launch {
