@@ -65,9 +65,9 @@ class PublicacionViewModel(private val repository: PublicacionRepository) : View
             result.fold(
                 onSuccess = {
                     val mensaje = if (imagePaths.isNotEmpty()) {
-                        "PublicaciÃ³n creada con ${imagePaths.size} imagen(es)"
+                        "Publicacion creada con ${imagePaths.size} imagen(es)"
                     } else {
-                        "PublicaciÃ³n creada"
+                        "Publicacion creada"
                     }
                     onResult(true, mensaje)
                 },
