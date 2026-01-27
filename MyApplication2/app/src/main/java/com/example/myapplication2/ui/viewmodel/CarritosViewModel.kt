@@ -112,7 +112,7 @@ class CarritoViewModel(private val repository: CarritoRepository) : ViewModel() 
     }
 
     /**
-     * Procesar compra (simulaciÃ³n)
+     * Procesar compra (simulación)
      */
     fun procesarCompra(
         usuarioId: Int,
@@ -120,16 +120,16 @@ class CarritoViewModel(private val repository: CarritoRepository) : ViewModel() 
     ) {
         viewModelScope.launch {
             if (_itemsCarrito.value.isEmpty()) {
-                onResult(false, "El carrito estÃ¡ vacÃ­o")
+                onResult(false, "El carrito está vacío")
                 return@launch
             }
 
-            // AquÃ­ irÃ­an los procesos reales de pago
+            // Aquí irían los procesos reales de pago
             // Por ahora solo vaciamos el carrito
             val result = repository.vaciarCarrito(usuarioId)
             result.fold(
                 onSuccess = {
-                    onResult(true, "Â¡Compra realizada con Ã©xito! Total: $${String.format("%,.0f", _totalCarrito.value).replace(",", ".")}")
+                    onResult(true, "¡Compra realizada con éxito! Total: $${String.format("%,.0f", _totalCarrito.value).replace(",", ".")}")
                 },
                 onFailure = { error ->
                     onResult(false, error.message ?: "Error al procesar compra")
