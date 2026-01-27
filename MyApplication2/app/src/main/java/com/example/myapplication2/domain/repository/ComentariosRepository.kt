@@ -24,7 +24,7 @@ class ComentarioRepository(
     ): Result<Long> {
         return try {
             if (contenido.isBlank()) {
-                return Result.failure(Exception("El comentario no puede estar vacÃ­o"))
+                return Result.failure(Exception("El comentario no puede estar vacío"))
             }
 
             val comentario = Comentario(
@@ -36,7 +36,7 @@ class ComentarioRepository(
 
             val id = comentarioDao.insertarComentario(comentario)
 
-            // Incrementar contador de comentarios en la publicaciÃ³n
+            // Incrementar contador de comentarios en la publicación
             publicacionDao.incrementarComentarios(publicacionId)
 
             Result.success(id)
@@ -46,7 +46,7 @@ class ComentarioRepository(
     }
 
     /**
-     * Obtener comentarios de una publicaciÃ³n
+     * Obtener comentarios de una publicación
      */
     fun obtenerComentarios(publicacionId: Int): Flow<List<Comentario>> {
         return comentarioDao.obtenerComentariosPorPublicacion(publicacionId)
@@ -58,7 +58,7 @@ class ComentarioRepository(
     suspend fun eliminarComentario(comentario: Comentario): Result<Unit> {
         return try {
             comentarioDao.eliminarComentario(comentario)
-            // Decrementar contador (necesitarÃ­as agregar esta funciÃ³n al PublicacionDao)
+            // Decrementar contador (necesitarías agregar esta función al PublicacionDao)
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
@@ -66,7 +66,7 @@ class ComentarioRepository(
     }
 
     /**
-     * Contar comentarios de una publicaciÃ³n
+     * Contar comentarios de una publicación
      */
     suspend fun contarComentarios(publicacionId: Int): Int {
         return try {
