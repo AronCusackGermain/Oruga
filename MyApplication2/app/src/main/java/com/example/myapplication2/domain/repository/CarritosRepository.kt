@@ -21,7 +21,7 @@ class CarritoRepository(private val carritoDao: CarritoDao) {
         cantidad: Int = 1
     ): Result<Long> {
         return try {
-            // Verificar si el juego ya estÃ¡ en el carrito
+            // Verificar si el juego ya está en el carrito
             val itemExistente = carritoDao.buscarItemEnCarrito(usuarioId, juegoId)
 
             if (itemExistente != null) {
