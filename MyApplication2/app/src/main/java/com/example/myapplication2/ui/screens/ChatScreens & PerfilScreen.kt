@@ -635,7 +635,7 @@ fun PerfilScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("Sobre mÃƒÂ­", fontWeight = FontWeight.Bold)
+                    Text("Sobre mi", fontWeight = FontWeight.Bold)
                     IconButton(onClick = { editando = !editando }) {
                         Icon(
                             imageVector = if (editando) Icons.Default.Check else Icons.Default.Edit,
@@ -654,7 +654,7 @@ fun PerfilScreen(
                     )
                 } else {
                     Text(
-                        text = descripcion.ifBlank { "Sin descripciÃƒÂ³n" },
+                        text = descripcion.ifBlank { "Sin descripcion" },
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                     )
                 }
@@ -728,7 +728,7 @@ fun PerfilScreen(
         ) {
             Icon(Icons.Default.ExitToApp, contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Cerrar SesiÃƒÂ³n")
+            Text("Cerrar Sesion")
         }
     }
 }
