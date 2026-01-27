@@ -3,12 +3,7 @@ package com.example.myapplication.domain.repository
 import com.example.myapplication.data.dao.UsuarioDao
 import com.example.myapplication.data.models.Usuario
 import com.example.myapplication.data.config.ModeradorConfig
-import com.example.myapplication.data.remote.dtos.JwtResponse
 import kotlinx.coroutines.flow.Flow
-import com.example.myapplication.data.remote.dtos.LoginRequest
-import com.example.myapplication.data.remote.dtos.RegisterRequest
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 /**
  * Repositorio para gestionar operaciones relacionadas con Usuario
@@ -58,10 +53,7 @@ class UsuarioRepository(private val usuarioDao: UsuarioDao) {
                 mensajeAdicional = " Â¡Bienvenido Moderador!"
             }
             // OpciÃ³n 2: Verificar si ingresÃ³ un cÃ³digo vÃ¡lido
-            else if (codigoModerador.isNotBlank() && ModeradorConfig.validarCodigoModerador(
-                    codigoModerador
-                )
-            ) {
+            else if (codigoModerador.isNotBlank() && ModeradorConfig.validarCodigoModerador(codigoModerador)) {
                 esModerador = true
                 mensajeAdicional = " Â¡CÃ³digo de moderador vÃ¡lido!"
             }
