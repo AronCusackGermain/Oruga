@@ -94,7 +94,7 @@ fun CarritoScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         if (itemsCarrito.isEmpty()) {
-            // Carrito vacÃ­o
+            // Carrito vacío
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -105,20 +105,20 @@ fun CarritoScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.ShoppingCart,
-                        contentDescription = "Carrito vacÃ­o",
+                        contentDescription = "Carrito vacío",
                         modifier = Modifier.size(120.dp),
                         tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "Tu carrito estÃ¡ vacÃ­o",
+                        text = "Tu carrito está vacío",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Â¡Explora nuestro catÃ¡logo!",
+                        text = "¡Explora nuestro catálogo!",
                         fontSize = 14.sp,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
                     )
@@ -128,7 +128,7 @@ fun CarritoScreen(
                     ) {
                         Icon(Icons.Default.Games, contentDescription = null)
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Ver CatÃ¡logo")
+                        Text("Ver Catálogo")
                     }
                 }
             }
@@ -156,7 +156,7 @@ fun CarritoScreen(
                 item { Spacer(modifier = Modifier.height(100.dp)) }
             }
 
-            // Footer con total y botÃ³n de compra
+            // Footer con total y botón de compra
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 color = MaterialTheme.colorScheme.surface,
@@ -222,7 +222,7 @@ fun CarritoScreen(
         }
     }
 
-    // DiÃ¡logo de confirmaciÃ³n de compra
+    // Diálogo de confirmación de compra
     if (mostrarDialogoCompra) {
         AlertDialog(
             onDismissRequest = { mostrarDialogoCompra = false },
@@ -230,7 +230,7 @@ fun CarritoScreen(
             title = { Text("Confirmar Compra") },
             text = {
                 Column {
-                    Text("Â¿Deseas confirmar esta compra?")
+                    Text("¿Deseas confirmar esta compra?")
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         "Total a pagar: ${formatearPrecioCLP(totalCarrito)}",
@@ -386,12 +386,12 @@ fun ItemCarritoCard(
         }
     }
 
-    // DiÃ¡logo de confirmaciÃ³n para eliminar
+    // Diálogo de confirmación para eliminar
     if (mostrarEliminar) {
         AlertDialog(
             onDismissRequest = { mostrarEliminar = false },
             title = { Text("Eliminar producto") },
-            text = { Text("Â¿Deseas eliminar ${item.nombreJuego} del carrito?") },
+            text = { Text("¿Deseas eliminar ${item.nombreJuego} del carrito?") },
             confirmButton = {
                 Button(
                     onClick = {
