@@ -99,7 +99,6 @@ fun OrugaApp(database: AppDatabase) {
                 DrawerMenu(
                     usuario = usuarioActual,
                     navController = navController,
-                    cantidadItemsCarrito = cantidadItemsCarrito,
                     onCloseDrawer = { scope.launch { drawerState.close() } },
                     onLogout = {
                         usuarioViewModel.logout {
@@ -119,14 +118,14 @@ fun OrugaApp(database: AppDatabase) {
                     Header(
                         titulo = when {
                             currentRoute == "home" -> "Oruga"
-                            currentRoute == "catalogo" -> "CatÃ¡logo"
+                            currentRoute == "catalogo" -> "Catálogo"
                             currentRoute == "comunidad" -> "Comunidad"
                             currentRoute == "chat_grupal" -> "Chat Grupal"
                             currentRoute == "perfil" -> "Mi Perfil"
                             currentRoute == "miembros" -> "Miembros"
                             currentRoute == "carrito" -> "Carrito (${cantidadItemsCarrito})"
                             currentRoute?.startsWith("detalle_juego") == true -> "Detalles"
-                            currentRoute?.startsWith("detalle_publicacion") == true -> "PublicaciÃ³n"
+                            currentRoute?.startsWith("detalle_publicacion") == true -> "Publicación"
                             else -> "Oruga"
                         },
                         mostrarHome = currentRoute != "home",
@@ -179,7 +178,7 @@ fun OrugaApp(database: AppDatabase) {
                     )
                 }
 
-                // CATÃLOGO
+                // CATÁLOGO
                 composable("catalogo") {
                     CatalogoScreen(navController)
                 }
@@ -216,7 +215,7 @@ fun OrugaApp(database: AppDatabase) {
                     )
                 }
 
-                // DETALLE DE PUBLICACIÃ“N CON COMENTARIOS
+                // DETALLE DE PUBLICACIÓN CON COMENTARIOS
                 composable(
                     route = "detalle_publicacion/{publicacionId}",
                     arguments = listOf(navArgument("publicacionId") { type = NavType.IntType })
