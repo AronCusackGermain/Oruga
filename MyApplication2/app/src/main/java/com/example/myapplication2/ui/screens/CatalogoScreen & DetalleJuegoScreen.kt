@@ -46,7 +46,7 @@ fun CatalogoScreen(navController: NavController) {
             .padding(16.dp)
     ) {
         Text(
-            text = "Explora Nuestro CatÃƒÂ¡logo",
+            text = "Explora Nuestro Catalogo",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 16.dp)
@@ -200,7 +200,7 @@ fun DetalleJuegoScreen(
                 contentScale = ContentScale.Crop
             )
 
-            // BotÃ³n de volver
+            // Botón de volver
             IconButton(
                 onClick = { navController.navigateUp() },
                 modifier = Modifier
@@ -219,7 +219,7 @@ fun DetalleJuegoScreen(
                 }
             }
 
-            // Badge de calificaciÃ³n
+            // Badge de calificación
             Surface(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
@@ -250,7 +250,7 @@ fun DetalleJuegoScreen(
         Column(
             modifier = Modifier.padding(20.dp)
         ) {
-            // TÃ­tulo y precio
+            // Título y precio
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -299,7 +299,7 @@ fun DetalleJuegoScreen(
 
             Divider(modifier = Modifier.padding(vertical = 20.dp))
 
-            // InformaciÃ³n del juego
+            // Información del juego
             InfoRow(
                 icon = Icons.Default.Business,
                 label = "Desarrollador",
@@ -322,9 +322,9 @@ fun DetalleJuegoScreen(
 
             Divider(modifier = Modifier.padding(vertical = 20.dp))
 
-            // DescripciÃ³n
+            // Descripción
             Text(
-                text = "DescripciÃ³n",
+                text = "Descripción",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 12.dp)
@@ -404,7 +404,7 @@ fun DetalleJuegoScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Botones de acciÃ³n
+            // Botones de acción
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -437,7 +437,7 @@ fun DetalleJuegoScreen(
                         } ?: run {
                             Toast.makeText(
                                 context,
-                                "Debes iniciar sesiÃ³n",
+                                "Debes iniciar sesión",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
