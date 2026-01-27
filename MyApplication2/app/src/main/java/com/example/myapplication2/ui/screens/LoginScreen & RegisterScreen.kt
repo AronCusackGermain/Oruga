@@ -73,7 +73,7 @@ fun LoginScreen(
         emailError = when {
             email.isEmpty() -> ""
             !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() ->
-                "Formato de email invÃ¡lido"
+                "Formato de email invalido"
             else -> ""
         }
     }
@@ -82,7 +82,7 @@ fun LoginScreen(
     LaunchedEffect(password) {
         passwordError = when {
             password.isEmpty() -> ""
-            password.length < 6 -> "MÃ­nimo 6 caracteres"
+            password.length < 6 -> "Minimo 6 caracteres"
             else -> ""
         }
     }
@@ -105,7 +105,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Iniciar SesiÃ³n",
+            text = "Iniciar Sesion",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
@@ -190,7 +190,7 @@ fun LoginScreen(
                 email = it
                 errorMessage = "" // Limpiar error general
             },
-            label = { Text("Correo electrÃ³nico") },
+            label = { Text("Correo electronico") },
             leadingIcon = {
                 Icon(Icons.Default.Email, contentDescription = "Email")
             },
@@ -204,7 +204,7 @@ fun LoginScreen(
                 } else if (emailError.isEmpty() && email.isNotEmpty()) {
                     Icon(
                         Icons.Default.CheckCircle,
-                        contentDescription = "VÃ¡lido",
+                        contentDescription = "Valido",
                         tint = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -233,7 +233,7 @@ fun LoginScreen(
                 password = it
                 errorMessage = "" // Limpiar error general
             },
-            label = { Text("ContraseÃ±a") },
+            label = { Text("Contraseña") },
             leadingIcon = {
                 Icon(Icons.Default.Lock, contentDescription = "Password")
             },
@@ -242,8 +242,8 @@ fun LoginScreen(
                     Icon(
                         imageVector = if (passwordVisible) Icons.Default.Visibility
                         else Icons.Default.VisibilityOff,
-                        contentDescription = if (passwordVisible) "Ocultar contraseÃ±a"
-                        else "Mostrar contraseÃ±a"
+                        contentDescription = if (passwordVisible) "Ocultar contraseña"
+                        else "Mostrar contraseña"
                     )
                 }
             },
@@ -294,7 +294,7 @@ fun LoginScreen(
                 }
 
                 if (password.isBlank()) {
-                    errorMessage = "Por favor ingresa tu contraseÃ±a"
+                    errorMessage = "Por favor ingresa tu contraseña"
                     return@Button
                 }
 
@@ -365,11 +365,11 @@ fun LoginScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Â¿No tienes cuenta? ",
+                text = "¿No tienes cuenta? ",
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
-                text = "RegÃ­strate",
+                text = "Registrate",
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.clickable {
@@ -399,7 +399,7 @@ fun LoginScreen(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Usa tus credenciales de registro o el cÃ³digo de moderador si aplica",
+                    text = "Usa tus credenciales de registro o el codigo de moderador si aplica",
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -473,8 +473,8 @@ fun RegisterScreen(
     LaunchedEffect(password) {
         passwordError = when {
             password.isEmpty() -> ""
-            password.length < 6 -> "MÃ­nimo 6 caracteres"
-            password.length > 30 -> "MÃ¡ximo 30 caracteres"
+            password.length < 6 -> "Minimo 6 caracteres"
+            password.length > 30 -> "Maximo 30 caracteres"
             else -> ""
         }
 
@@ -494,7 +494,7 @@ fun RegisterScreen(
     LaunchedEffect(confirmPassword, password) {
         confirmPasswordError = when {
             confirmPassword.isEmpty() -> ""
-            password != confirmPassword -> "Las contraseÃ±as no coinciden"
+            password != confirmPassword -> "Las contraseñas no coinciden"
             else -> ""
         }
     }
@@ -507,21 +507,21 @@ fun RegisterScreen(
         // Validar campos vacÃ­os
         if (email.isBlank()) return Pair(false, "âŒ El email es obligatorio")
         if (nombreUsuario.isBlank()) return Pair(false, "âŒ El nombre de usuario es obligatorio")
-        if (password.isBlank()) return Pair(false, "âŒ La contraseÃ±a es obligatoria")
-        if (confirmPassword.isBlank()) return Pair(false, "âŒ Debes confirmar tu contraseÃ±a")
+        if (password.isBlank()) return Pair(false, "âŒ La contraseña es obligatoria")
+        if (confirmPassword.isBlank()) return Pair(false, "âŒ Debes confirmar tu contraseña")
 
         // Validar errores existentes
         if (emailError.isNotEmpty()) return Pair(false, "âŒ $emailError")
         if (nombreUsuarioError.isNotEmpty()) return Pair(false, "âŒ $nombreUsuarioError")
         if (passwordError.isNotEmpty()) return Pair(false, "âŒ $passwordError")
-        if (confirmPasswordError.isNotEmpty()) return Pair(false, "âŒ Las contraseÃ±as no coinciden")
+        if (confirmPasswordError.isNotEmpty()) return Pair(false, "âŒ Las contraseñas no coinciden")
 
         // ValidaciÃ³n final de coincidencia
         if (password != confirmPassword) {
-            return Pair(false, "âŒ Las contraseÃ±as no coinciden")
+            return Pair(false, "âŒ Las contraseñas no coinciden")
         }
 
-        // Si todo estÃ¡ bien
+        // Si todo esta¡ bien
         return Pair(true, "")
     }
 
@@ -599,7 +599,7 @@ fun RegisterScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Ãšnete a la comunidad Oruga",
+            text = "Unete a la comunidad Oruga",
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
         )
@@ -612,7 +612,7 @@ fun RegisterScreen(
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Correo electrÃ³nico *") },
+            label = { Text("Correo electronico *") },
             placeholder = { Text("usuario@duocuc.cl") },
             leadingIcon = {
                 Icon(Icons.Default.Email, contentDescription = "Email")
@@ -627,7 +627,7 @@ fun RegisterScreen(
                     )
                     else -> Icon(
                         Icons.Default.CheckCircle,
-                        contentDescription = "VÃ¡lido",
+                        contentDescription = "Valido",
                         tint = Color(0xFF4CAF50)
                     )
                 }
@@ -671,7 +671,7 @@ fun RegisterScreen(
                     )
                     else -> Icon(
                         Icons.Default.CheckCircle,
-                        contentDescription = "VÃ¡lido",
+                        contentDescription = "Valido",
                         tint = Color(0xFF4CAF50)
                     )
                 }
@@ -688,7 +688,7 @@ fun RegisterScreen(
                     }
                     nombreUsuario.isNotEmpty() -> {
                         Text(
-                            text = "âœ“ Nombre de usuario vÃ¡lido",
+                            text = "Nombre de usuario valido",
                             color = Color(0xFF4CAF50),
                             fontSize = 12.sp
                         )
@@ -703,15 +703,15 @@ fun RegisterScreen(
         Spacer(modifier = Modifier.height(12.dp))
 
         // ========================================
-        // CAMPO: CONTRASEÃ‘A
+        // CAMPO: CONTRASEA
         // ========================================
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("ContraseÃ±a *") },
-            placeholder = { Text("MÃ­nimo 6 caracteres") },
+            label = { Text("Contraseña *") },
+            placeholder = { Text("Minimo 6 caracteres") },
             leadingIcon = {
-                Icon(Icons.Default.Lock, contentDescription = "ContraseÃ±a")
+                Icon(Icons.Default.Lock, contentDescription = "Contraseña")
             },
             trailingIcon = {
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -756,8 +756,8 @@ fun RegisterScreen(
         OutlinedTextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
-            label = { Text("Confirmar contraseÃ±a *") },
-            placeholder = { Text("Repite tu contraseÃ±a") },
+            label = { Text("Confirmar contraseña *") },
+            placeholder = { Text("Repite tu contraseña") },
             leadingIcon = {
                 Icon(Icons.Default.Lock, contentDescription = "Confirmar")
             },
@@ -799,7 +799,7 @@ fun RegisterScreen(
                     }
                     confirmPassword.isNotEmpty() && confirmPasswordError.isEmpty() -> {
                         Text(
-                            text = "âœ“ Las contraseÃ±as coinciden",
+                            text = "Las contraseñas coinciden",
                             color = Color(0xFF4CAF50),
                             fontSize = 12.sp
                         )
@@ -842,7 +842,7 @@ fun RegisterScreen(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Â¿Eres moderador?",
+                            text = "¿Eres moderador?",
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Medium
                         )
@@ -861,8 +861,8 @@ fun RegisterScreen(
                         OutlinedTextField(
                             value = codigoModerador,
                             onValueChange = { codigoModerador = it },
-                            label = { Text("CÃ³digo de moderador") },
-                            placeholder = { Text("Ingresa tu cÃ³digo") },
+                            label = { Text("Codigo de moderador") },
+                            placeholder = { Text("Ingresa tu codigo") },
                             leadingIcon = {
                                 Icon(Icons.Default.Shield, contentDescription = null)
                             },
@@ -878,7 +878,7 @@ fun RegisterScreen(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Text(
-                            text = "â„¹ï¸ Si tienes un cÃ³digo de moderador proporcionado por los administradores, ingrÃ©salo aquÃ­. De lo contrario, puedes dejarlo en blanco.",
+                            text = "Si tienes un codigo de moderador proporcionado por los administradores, ingresalo aqui. De lo contrario, puedes dejarlo en blanco.",
                             fontSize = 11.sp,
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                             lineHeight = 14.sp
@@ -926,7 +926,7 @@ fun RegisterScreen(
 
         // Texto de tÃ©rminos y condiciones
         Text(
-            text = "Al registrarte, aceptas nuestros TÃ©rminos y Condiciones",
+            text = "Al registrarte, aceptas nuestros Terminos y Condiciones",
             fontSize = 11.sp,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
             modifier = Modifier.padding(horizontal = 16.dp)
@@ -940,12 +940,12 @@ fun RegisterScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Â¿Ya tienes cuenta? ",
+                text = "¿Ya tienes cuenta? ",
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
             )
             Text(
-                text = "Inicia sesiÃ³n",
+                text = "Inicia sesion",
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold,
@@ -976,8 +976,8 @@ fun PasswordStrengthIndicator(strength: Int) {
 
     val strengthText = when (strength) {
         0 -> ""
-        1 -> "Muy dÃ©bil"
-        2 -> "DÃ©bil"
+        1 -> "Muy debil"
+        2 -> "Debil"
         3 -> "Media"
         4 -> "Fuerte"
         else -> ""
@@ -1000,7 +1000,7 @@ fun PasswordStrengthIndicator(strength: Int) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Fortaleza de contraseÃ±a:",
+                text = "Fortaleza de contraseña:",
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
             )
@@ -1026,7 +1026,7 @@ fun PasswordStrengthIndicator(strength: Int) {
         Spacer(modifier = Modifier.height(4.dp))
 
         Text(
-            text = "ðŸ’¡ Usa mayÃºsculas, nÃºmeros y al menos 8 caracteres para una contraseÃ±a fuerte",
+            text = "ay’¡ Usa mayusculas, numeros y al menos 8 caracteres para una contraseña fuerte",
             fontSize = 10.sp,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
             lineHeight = 12.sp
