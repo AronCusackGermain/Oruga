@@ -3,7 +3,6 @@ package com.example.myapplication.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.models.Usuario
-import com.example.myapplication.domain.repository.OrugaRepository
 import com.example.myapplication.domain.repository.UsuarioRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,8 +25,6 @@ class UsuarioViewModel(private val repository: UsuarioRepository) : ViewModel() 
 
     private val _usuariosDesconectados = MutableStateFlow<List<Usuario>>(emptyList())
     val usuariosDesconectados: StateFlow<List<Usuario>> = _usuariosDesconectados.asStateFlow()
-
-    private val orugaRepository = OrugaRepository()
 
     init {
         cargarTodosLosUsuarios()
@@ -191,5 +188,4 @@ class UsuarioViewModel(private val repository: UsuarioRepository) : ViewModel() 
             }
         }
     }
-
 }
