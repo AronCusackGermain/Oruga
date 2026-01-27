@@ -4,23 +4,23 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.myapplication.data.dao.MensajeDao
-import com.example.myapplication.data.dao.PublicacionDao
-import com.example.myapplication.data.dao.UsuarioDao
-import com.example.myapplication.data.models.Mensaje
-import com.example.myapplication.data.models.Publicacion
-import com.example.myapplication.data.models.Usuario
-import com.example.myapplication.data.dao.ReporteDao
-import com.example.myapplication.data.models.Reporte
-
+import com.example.myapplication.data.dao.*
+import com.example.myapplication.data.models.*
 
 /**
- * Base de datos principal de la aplicaciÃ³n Oruga
- * Implementa el patrÃ³n Singleton para garantizar una Ãºnica instancia
+ * Base de datos principal de la aplicación Oruga - ACTUALIZADA
+ * Versión 3: Agrega soporte para Comentarios y Carrito
  */
 @Database(
-    entities = [Usuario::class, Publicacion::class, Mensaje::class, Reporte::class],
-    version = 2, // Incrementamos versiÃ³n
+    entities = [
+        Usuario::class,
+        Publicacion::class,
+        Mensaje::class,
+        Reporte::class,
+        Comentario::class,
+        ItemCarrito::class
+    ],
+    version = 3, // Incrementamos versión
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -29,6 +29,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun publicacionDao(): PublicacionDao
     abstract fun mensajeDao(): MensajeDao
     abstract fun reporteDao(): ReporteDao
+    abstract fun comentarioDao(): ComentarioDao
+    abstract fun carritoDao(): CarritoDao
 
     companion object {
         @Volatile
@@ -41,7 +43,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "oruga_database"
                 )
-                    .fallbackToDestructiveMigration()
+                    .fallbackToDestructiveMigration() // IMPORTANTE: Borra datos al cambiar esquema
                     .build()
                 INSTANCE = instance
                 instance
@@ -49,38 +51,3 @@ abstract class AppDatabase : RoomDatabase() {
         }
     }
 }
-
-/**
- * Base de datos principal de la aplicaciÃ³n Oruga
- * Implementa el patrÃ³n Singleton para garantizar una Ãºnica instancia
- */
-/*@Database(
-    entities = [Usuario::class, Publicacion::class, Mensaje::class],
-    version = 1,
-    exportSchema = false
-)
-abstract class AppDatabase : RoomDatabase() {
-
-    abstract fun usuarioDao(): UsuarioDao
-    abstract fun publicacionDao(): PublicacionDao
-    abstract fun mensajeDao(): MensajeDao
-
-    companion object {
-        @Volatile
-        private var INSTANCE: AppDatabase? = null
-
-        fun getDatabase(context: Context): AppDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "oruga_database"
-                )
-                    .fallbackToDestructiveMigration()
-                    .build()
-                INSTANCE = instance
-                instance
-            }
-        }
-    }
-}*/
