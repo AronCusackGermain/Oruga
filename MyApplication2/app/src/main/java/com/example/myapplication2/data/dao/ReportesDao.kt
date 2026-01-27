@@ -1,59 +1,100 @@
 package com.example.myapplication.data.dao
 
 import androidx.room.*
-import com.example.myapplication.data.models.EstadoReporte
-import com.example.myapplication.data.models.Reporte
-import com.example.myapplication.data.models.TipoReporte
+import com.example.myapplication.data.models.Usuario
 import kotlinx.coroutines.flow.Flow
 
+
 /**
- * DAO para operaciones con Reporte en la base de datos
+ * DAO para operaciones con Usuario en la base de datos
  */
 @Dao
-interface ReporteDao {
+interface UsuarioDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertarReporte(reporte: Reporte): Long
+    suspend fun insertarUsuario(usuario: Usuario): Long
 
-    @Query("SELECT * FROM reportes ORDER BY fechaReporte DESC")
-    fun obtenerTodosReportes(): Flow<List<Reporte>>
+    @Query("SELECT * FROM usuarios WHERE email = :email LIMIT 1")
+    suspend fun buscarPorEmail(email: String): Usuario?
 
-    @Query("SELECT * FROM reportes WHERE estado = :estado ORDER BY fechaReporte DESC")
-    fun obtenerReportesPorEstado(estado: EstadoReporte): Flow<List<Reporte>>
+    @Query("SELECT EXISTS(SELECT 1 FROM usuarios WHERE email = :email)")
+    suspend fun existeEmail(email: String): Boolean
 
-    @Query("SELECT * FROM reportes WHERE tipoReporte = :tipo ORDER BY fechaReporte DESC")
-    fun obtenerReportesPorTipo(tipo: TipoReporte): Flow<List<Reporte>>
+    @Query("SELECT * FROM usuarios WHERE id = :id")
+    suspend fun buscarPorId(id: Int): Usuario?
 
-    @Query("SELECT * FROM reportes WHERE id = :id")
-    suspend fun obtenerReportePorId(id: Int): Reporte?
+    @Query("SELECT * FROM usuarios ORDER BY nombreUsuario ASC")
+    fun obtenerTodosLosUsuarios(): Flow<List<Usuario>>
 
-    @Query("SELECT * FROM reportes WHERE idContenido = :idContenido AND tipoReporte = :tipo")
-    suspend fun obtenerReportesPorContenido(idContenido: Int, tipo: TipoReporte): List<Reporte>
+    @Query("SELECT * FROM usuarios WHERE estadoConexion = :conectado ORDER BY nombreUsuario ASC")
+    fun obtenerUsuariosPorEstado(conectado: Boolean): Flow<List<Usuario>>
 
     @Update
-    suspend fun actualizarReporte(reporte: Reporte)
+    suspend fun actualizarUsuario(usuario: Usuario)
 
-    @Query("""
-        UPDATE reportes 
-        SET estado = :estado, 
-            moderadorId = :moderadorId, 
-            moderadorNombre = :moderadorNombre,
-            fechaResolucion = :fechaResolucion,
-            accionTomada = :accionTomada
-        WHERE id = :reporteId
-    """)
-    suspend fun resolverReporte(
-        reporteId: Int,
-        estado: EstadoReporte,
-        moderadorId: Int,
-        moderadorNombre: String,
-        fechaResolucion: Long,
-        accionTomada: String
-    )
+    @Query("UPDATE usuarios SET estadoConexion = :estado WHERE id = :usuarioId")
+    suspend fun actualizarEstadoConexion(usuarioId: Int, estado: Boolean)
 
-    @Query("SELECT COUNT(*) FROM reportes WHERE estado = :estado")
-    fun contarReportesPorEstado(estado: EstadoReporte): Flow<Int>
+    @Query("UPDATE usuarios SET steamId = :steamId, discordId = :discordId WHERE id = :usuarioId")
+    suspend fun actualizarConexionesExternas(usuarioId: Int, steamId: String, discordId: String)
 
     @Delete
-    suspend fun eliminarReporte(reporte: Reporte)
+    suspend fun eliminarUsuario(usuario: Usuario)
+
+    // NUEVAS FUNCIONES PARA MODERADORES
+
+    @Query("UPDATE usuarios SET estaBaneado = :baneado, fechaBaneo = :fecha, razonBaneo = :razon WHERE id = :usuarioId")
+    suspend fun banearUsuario(usuarioId: Int, baneado: Boolean, fecha: Long?, razon: String)
+
+    @Query("SELECT * FROM usuarios WHERE estaBaneado = 1 ORDER BY fechaBaneo DESC")
+    fun obtenerUsuariosBaneados(): Flow<List<Usuario>>
+
+    @Query("UPDATE usuarios SET cantidadPublicaciones = cantidadPublicaciones + 1 WHERE id = :usuarioId")
+    suspend fun incrementarPublicaciones(usuarioId: Int)
+
+    @Query("UPDATE usuarios SET cantidadMensajes = cantidadMensajes + 1 WHERE id = :usuarioId")
+    suspend fun incrementarMensajes(usuarioId: Int)
+
+    @Query("UPDATE usuarios SET cantidadReportes = cantidadReportes + 1 WHERE id = :usuarioId")
+    suspend fun incrementarReportes(usuarioId: Int)
+
+    @Query("UPDATE usuarios SET ultimaConexion = :timestamp WHERE id = :usuarioId")
+    suspend fun actualizarUltimaConexion(usuarioId: Int, timestamp: Long)
 }
+
+/**
+ * DAO para operaciones con Usuario en la base de datos
+ */
+/*@Dao
+interface UsuarioDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertarUsuario(usuario: Usuario): Long
+
+    @Query("SELECT * FROM usuarios WHERE email = :email LIMIT 1")
+    suspend fun buscarPorEmail(email: String): Usuario?
+
+    @Query("SELECT EXISTS(SELECT 1 FROM usuarios WHERE email = :email)")
+    suspend fun existeEmail(email: String): Boolean
+
+    @Query("SELECT * FROM usuarios WHERE id = :id")
+    suspend fun buscarPorId(id: Int): Usuario?
+
+    @Query("SELECT * FROM usuarios ORDER BY nombreUsuario ASC")
+    fun obtenerTodosLosUsuarios(): Flow<List<Usuario>>
+
+    @Query("SELECT * FROM usuarios WHERE estadoConexion = :conectado ORDER BY nombreUsuario ASC")
+    fun obtenerUsuariosPorEstado(conectado: Boolean): Flow<List<Usuario>>
+
+    @Update
+    suspend fun actualizarUsuario(usuario: Usuario)
+
+    @Query("UPDATE usuarios SET estadoConexion = :estado WHERE id = :usuarioId")
+    suspend fun actualizarEstadoConexion(usuarioId: Int, estado: Boolean)
+
+    @Query("UPDATE usuarios SET steamId = :steamId, discordId = :discordId WHERE id = :usuarioId")
+    suspend fun actualizarConexionesExternas(usuarioId: Int, steamId: String, discordId: String)
+
+    @Delete
+    suspend fun eliminarUsuario(usuario: Usuario)
+}*/
