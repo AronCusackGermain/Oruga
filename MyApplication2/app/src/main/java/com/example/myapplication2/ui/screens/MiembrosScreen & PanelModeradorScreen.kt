@@ -42,7 +42,7 @@ fun MiembrosScreen(
     val usuarioActual by usuarioViewModel.usuarioActual.collectAsState()
 
     var tabIndex by remember { mutableStateOf(0) }
-    val tabs = listOf("En lÃ­nea", "Desconectados", "Todos")
+    val tabs = listOf("En linea", "Desconectados", "Todos")
 
     Column(
         modifier = Modifier
@@ -101,7 +101,7 @@ fun MiembrosScreen(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "No hay miembros en esta categorÃ­a",
+                        text = "No hay miembros en esta categoria",
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                     )
                 }
@@ -275,7 +275,7 @@ fun PanelModeradorScreen(
     var mostrarDialogoBanear by remember { mutableStateOf(false) }
     var usuarioSeleccionado by remember { mutableStateOf<Usuario?>(null) }
     var tabSeleccionado by remember { mutableStateOf(0) }
-    val tabs = listOf("EstadÃ­sticas", "Reportes", "Usuarios", "Publicaciones")
+    val tabs = listOf("Estadisticas", "Reportes", "Usuarios", "Publicaciones")
 
     if (usuarioActual?.esModerador != true) {
         Box(
@@ -291,7 +291,7 @@ fun PanelModeradorScreen(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text("Acceso denegado", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                Text("Solo moderadores pueden acceder a esta secciÃ³n")
+                Text("Solo moderadores pueden acceder a esta seccion")
             }
         }
         return
@@ -467,7 +467,7 @@ fun EstadisticasTab(
     onCrearAnuncio: () -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
-        // EstadÃ­sticas en cards
+        // Estadisticas en cards
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -524,7 +524,7 @@ fun EstadisticasTab(
 
         // Acciones rÃ¡pidas
         Text(
-            text = "Acciones RÃ¡pidas",
+            text = "Acciones Rapidas",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 12.dp)
@@ -704,7 +704,7 @@ fun UsuariosTab(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("GestiÃ³n de Usuarios", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text("Gestion de Usuarios", fontSize = 18.sp, fontWeight = FontWeight.Bold)
             Switch(
                 checked = mostrarBaneados,
                 onCheckedChange = { mostrarBaneados = it }
