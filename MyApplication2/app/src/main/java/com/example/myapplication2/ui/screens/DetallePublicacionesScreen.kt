@@ -94,7 +94,7 @@ fun DetallePublicacionScreen(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                "SÃ© el primero en comentar",
+                                "el primero en comentar",
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                             )
                         }
