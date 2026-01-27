@@ -18,7 +18,7 @@ import androidx.navigation.NavController
 import com.example.myapplication.data.models.Usuario
 
 /**
- * MenÃº lateral deslizable (Drawer) - ACTUALIZADO con Carrito
+ * Menú lateral deslizable (Drawer) - ACTUALIZADO con Carrito
  */
 @Composable
 fun DrawerMenu(
@@ -26,7 +26,7 @@ fun DrawerMenu(
     navController: NavController,
     onCloseDrawer: () -> Unit,
     onLogout: () -> Unit,
-    cantidadItemsCarrito: Int = 0 // Nuevo parÃ¡metro
+    cantidadItemsCarrito: Int = 0 // Nuevo parámetro
 ) {
     ModalDrawerSheet {
         Column(
@@ -40,7 +40,7 @@ fun DrawerMenu(
                 Divider(modifier = Modifier.padding(vertical = 16.dp))
             }
 
-            // Opciones del menÃº
+            // Opciones del menú
             DrawerMenuItem(
                 icon = Icons.Default.Home,
                 text = "Inicio",
@@ -52,7 +52,7 @@ fun DrawerMenu(
 
             DrawerMenuItem(
                 icon = Icons.Default.Games,
-                text = "CatÃ¡logo de Juegos",
+                text = "Catálogo de Juegos",
                 onClick = {
                     navController.navigate("catalogo")
                     onCloseDrawer()
@@ -159,10 +159,10 @@ fun DrawerMenu(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // BotÃ³n de cerrar sesiÃ³n
+            // Botón de cerrar sesión
             DrawerMenuItem(
                 icon = Icons.Default.ExitToApp,
-                text = "Cerrar SesiÃ³n",
+                text = "Cerrar Sesión",
                 onClick = {
                     onLogout()
                     onCloseDrawer()
