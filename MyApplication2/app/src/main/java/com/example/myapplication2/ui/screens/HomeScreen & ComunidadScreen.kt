@@ -81,7 +81,7 @@ fun HomeScreen(
                         Spacer(modifier = Modifier.width(12.dp))
                         Column {
                             Text(
-                                text = "Â¡Hola, ${usuarioActual?.nombreUsuario ?: "Gamer"}!",
+                                text = "Hola, ${usuarioActual?.nombreUsuario ?: "Gamer"}!",
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -124,7 +124,7 @@ fun HomeScreen(
         // Anuncios recientes
         if (anuncios.isNotEmpty()) {
             Text(
-                text = "ðŸ“¢ Anuncios",
+                text = "Anuncios",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(vertical = 8.dp)
@@ -137,7 +137,7 @@ fun HomeScreen(
 
         // Publicaciones recientes
         Text(
-            text = "ðŸŽ® Actividad Reciente",
+            text = "Actividad Reciente",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(vertical = 8.dp)
@@ -271,7 +271,7 @@ fun ComunidadScreen(
                     publicacionViewModel = publicacionViewModel,
                     onLikeClick = {
                         publicacionViewModel.darLike(publicacion.id)
-                        Toast.makeText(context, "Â¡Like dado!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "¡Like dado!", Toast.LENGTH_SHORT).show()
                     },
                     onClick = {
                         navController.navigate("detalle_publicacion/${publicacion.id}")
@@ -287,7 +287,7 @@ fun ComunidadScreen(
                 .align(Alignment.BottomEnd)
                 .padding(16.dp)
         ) {
-            Icon(Icons.Default.Add, contentDescription = "Nueva publicaciÃ³n")
+            Icon(Icons.Default.Add, contentDescription = "Nueva publicacion")
         }
     }
 
@@ -464,13 +464,13 @@ fun CrearPublicacionDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Nueva PublicaciÃ³n") },
+        title = { Text("Nueva Publicacion") },
         text = {
             Column {
                 OutlinedTextField(
                     value = titulo,
                     onValueChange = { titulo = it },
-                    label = { Text("TÃ­tulo") },
+                    label = { Text("Titulo") },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -657,7 +657,7 @@ fun PublicacionCardConImagenes(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = Icons.Default.Image,
-                            contentDescription = "ImÃ¡genes",
+                            contentDescription = "Imagenes",
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(20.dp)
                         )
