@@ -1,8 +1,9 @@
 package com.oruga.backend.security;
 
+import com.oruga.backend.model.Usuario;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,22 +39,21 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return buildToken(extraClaims, userDetails, jwtExpiration);
+        return String.valueOf(buildToken(extraClaims, userDetails, jwtExpiration));
     }
 
-    private String buildToken(
-            Map<String, Object> extraClaims,
-            UserDetails userDetails,
-            long expiration
-    ) {
-        return Jwts
-                .builder()
+    private JwtBuilder buildToken(Map<String, Object> extraClaims, UserDetails userDetails, Long jwtExpiration) {
+        Usuario usuario = (Usuario) userDetails;
+
+        return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-                .compact();
+                .claim("userId", usuario.getId())
+                .claim("email", usuario.getEmail())
+                .claim("cantidadMensajes", usuario.getCantidadMensajes() != null ? usuario.getCantidadMensajes() : 0)
+                .claim("cantidadPublicaciones", usuario.getCantidadPublicaciones() != null ? usuario.getCantidadPublicaciones() : 0)
+                .claim("cantidadReportes", usuario.getCantidadReportes() != null ? usuario.getCantidadReportes() : 0);
+          // ... resto del código
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
