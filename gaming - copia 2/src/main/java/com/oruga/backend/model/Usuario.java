@@ -11,8 +11,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Entidad Usuario - Replica del modelo Android
@@ -25,7 +31,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,7 +91,7 @@ public class Usuario {
     @Column(nullable = false)
     private Boolean estadoConexion = false;
 
-  // Estadísticas (para moderadores)
+    // Estadísticas (para moderadores)
     @Column(name = "cantidad_publicaciones", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer cantidadPublicaciones = 0;
 
@@ -136,8 +142,54 @@ public class Usuario {
             estadoConexion = false;
         }
     }
+
     @PreUpdate
     protected void onUpdate() {
         ultimaConexion = LocalDateTime.now();
     }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        if (esModerador) {
+            authorities.add(new SimpleGrantedAuthority("MODERADOR"));
+        }
+        authorities.add(new SimpleGrantedAuthority("USER"));
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return email; // Usamos email como username
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !estaBaneado;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return !estaBaneado;
+    }
 }
+
+
+
+
+
+
+
+
+
