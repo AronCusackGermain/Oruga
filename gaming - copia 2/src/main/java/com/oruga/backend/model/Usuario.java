@@ -85,14 +85,14 @@ public class Usuario {
     @Column(nullable = false)
     private Boolean estadoConexion = false;
 
-    // Estadísticas (para moderadores)
-    @Column(nullable = false)
+  // Estadísticas (para moderadores)
+    @Column(name = "cantidad_publicaciones", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer cantidadPublicaciones = 0;
 
-    @Column(nullable = false)
+    @Column(name = "cantidad_mensajes", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer cantidadMensajes = 0;
 
-    @Column(nullable = false)
+    @Column(name = "cantidad_reportes", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer cantidadReportes = 0;
 
     /**
@@ -117,8 +117,25 @@ public class Usuario {
         if (ultimaConexion == null) {
             ultimaConexion = LocalDateTime.now();
         }
+        if (cantidadMensajes == null) {
+            cantidadMensajes = 0;
+        }
+        if (cantidadPublicaciones == null) {
+            cantidadPublicaciones = 0;
+        }
+        if (cantidadReportes == null) {
+            cantidadReportes = 0;
+        }
+        if (esModerador == null) {
+            esModerador = false;
+        }
+        if (estaBaneado == null) {
+            estaBaneado = false;
+        }
+        if (estadoConexion == null) {
+            estadoConexion = false;
+        }
     }
-
     @PreUpdate
     protected void onUpdate() {
         ultimaConexion = LocalDateTime.now();
