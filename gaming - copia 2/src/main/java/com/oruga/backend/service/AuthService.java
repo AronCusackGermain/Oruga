@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,7 +54,7 @@ public class AuthService {
                 (request.getCodigoModerador() != null &&
                         CODIGOS_MODERADOR.contains(request.getCodigoModerador()));
 
-        // 4. Crear la entidad Usuario (Aún no tiene ID)
+        // 4. Crear usuario
         Usuario usuario = Usuario.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -64,11 +63,10 @@ public class AuthService {
                 .estadoConexion(true)
                 .build();
 
-        // 5. GUARDAR PRIMERO: Obtenemos el usuario con ID y datos persistidos
+        // 5. Guardar usuario
         Usuario usuarioGuardado = usuarioRepository.save(usuario);
 
-        // 6. ✅ ASEGURAR VALORES POR DEFECTO (Tu lógica defensiva)
-        // Esto protege contra NullPointerException al generar el token o leer en Android
+        // 6. Asegurar valores por defecto (por si @PrePersist no se ejecutó)
         if (usuarioGuardado.getCantidadMensajes() == null) {
             usuarioGuardado.setCantidadMensajes(0);
         }
@@ -79,25 +77,23 @@ public class AuthService {
             usuarioGuardado.setCantidadReportes(0);
         }
 
-        // Opcional: Si modificaste los valores arriba, guarda de nuevo para asegurar consistencia en BD
-        // usuarioRepository.save(usuarioGuardado);
-
-        // 7. GENERAR TOKEN
-        // Importante: Aquí pasamos 'usuarioGuardado' directamente al JwtService modificado
+        // 7. ✅ GENERAR TOKEN CON USUARIO COMPLETO
         String token = jwtService.generateToken(usuarioGuardado);
 
         // 8. Retornar respuesta
         return AuthResponse.builder()
                 .token(token)
                 .tipo("Bearer")
-                .id(usuarioGuardado.getId()) // Usamos el ID real de la BD
+                .id(usuarioGuardado.getId())
                 .email(usuarioGuardado.getEmail())
                 .nombreUsuario(usuarioGuardado.getNombreUsuario())
                 .esModerador(usuarioGuardado.getEsModerador())
                 .build();
     }
 
+    @Transactional
     public AuthResponse login(LoginRequest request) {
+        // 1. Autenticar
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -105,33 +101,30 @@ public class AuthService {
                 )
         );
 
+        // 2. Obtener usuario
         Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Verificar si está baneado
+        // 3. Verificar si está baneado
         if (usuario.getEstaBaneado()) {
             throw new RuntimeException("Tu cuenta ha sido suspendida: " + usuario.getRazonBaneo());
         }
 
-        // Actualizar estado de conexión
+        // 4. Actualizar estado de conexión
         usuario.setEstadoConexion(true);
-        usuarioRepository.save(usuario);
+        Usuario usuarioActualizado = usuarioRepository.save(usuario);
 
-        String token = jwtService.generateToken(
-                new org.springframework.security.core.userdetails.User(
-                        usuario.getEmail(),
-                        usuario.getPassword(),
-                        new ArrayList<>()
-                )
-        );
+        // 5. ✅ GENERAR TOKEN CON USUARIO COMPLETO
+        String token = jwtService.generateToken(usuarioActualizado);
 
+        // 6. Retornar respuesta
         return AuthResponse.builder()
                 .token(token)
                 .tipo("Bearer")
-                .id(usuario.getId())
-                .email(usuario.getEmail())
-                .nombreUsuario(usuario.getNombreUsuario())
-                .esModerador(usuario.getEsModerador())
+                .id(usuarioActualizado.getId())
+                .email(usuarioActualizado.getEmail())
+                .nombreUsuario(usuarioActualizado.getNombreUsuario())
+                .esModerador(usuarioActualizado.getEsModerador())
                 .build();
     }
 }
