@@ -66,4 +66,20 @@ public class Mensaje {
     public boolean tieneImagen() {
         return imagenUrl != null && !imagenUrl.isEmpty();
     }
+
+    @PrePersist
+    protected void onCreate() {
+        if (imagenUrl == null) {
+            imagenUrl = "";
+        }
+        if (esGrupal == null) {
+            esGrupal = true;
+        }
+        if (leido == null) {
+            leido = false;  // ✅ Esto soluciona el error
+        }
+        if (tipoMensaje == null) {
+            tipoMensaje = TipoMensaje.TEXTO;
+        }
+    }
 }
