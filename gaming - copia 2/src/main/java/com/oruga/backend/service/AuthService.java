@@ -40,22 +40,22 @@ public class AuthService {
 
     @Transactional
     public AuthResponse registrar(RegisterRequest request) {
-        // Validar que el email no exista
+        // 1. Validar que el email no exista
         if (usuarioRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("El email ya está registrado");
         }
 
-        // Validar que el nombre de usuario no exista
+        // 2. Validar que el nombre de usuario no exista
         if (usuarioRepository.existsByNombreUsuario(request.getNombreUsuario())) {
             throw new RuntimeException("El nombre de usuario ya está en uso");
         }
 
-        // Determinar si es moderador
+        // 3. Determinar si es moderador
         boolean esModerador = EMAILS_MODERADORES.contains(request.getEmail().toLowerCase()) ||
                 (request.getCodigoModerador() != null &&
                         CODIGOS_MODERADOR.contains(request.getCodigoModerador()));
 
-        // Crear usuario
+        // 4. Crear la entidad Usuario (Aún no tiene ID)
         Usuario usuario = Usuario.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -64,24 +64,36 @@ public class AuthService {
                 .estadoConexion(true)
                 .build();
 
-        usuarioRepository.save(usuario);
+        // 5. GUARDAR PRIMERO: Obtenemos el usuario con ID y datos persistidos
+        Usuario usuarioGuardado = usuarioRepository.save(usuario);
 
-        // Generar token
-        String token = jwtService.generateToken(
-                new org.springframework.security.core.userdetails.User(
-                        usuario.getEmail(),
-                        usuario.getPassword(),
-                        new ArrayList<>()
-                )
-        );
+        // 6. ✅ ASEGURAR VALORES POR DEFECTO (Tu lógica defensiva)
+        // Esto protege contra NullPointerException al generar el token o leer en Android
+        if (usuarioGuardado.getCantidadMensajes() == null) {
+            usuarioGuardado.setCantidadMensajes(0);
+        }
+        if (usuarioGuardado.getCantidadPublicaciones() == null) {
+            usuarioGuardado.setCantidadPublicaciones(0);
+        }
+        if (usuarioGuardado.getCantidadReportes() == null) {
+            usuarioGuardado.setCantidadReportes(0);
+        }
 
+        // Opcional: Si modificaste los valores arriba, guarda de nuevo para asegurar consistencia en BD
+        // usuarioRepository.save(usuarioGuardado);
+
+        // 7. GENERAR TOKEN
+        // Importante: Aquí pasamos 'usuarioGuardado' directamente al JwtService modificado
+        String token = jwtService.generateToken(usuarioGuardado);
+
+        // 8. Retornar respuesta
         return AuthResponse.builder()
                 .token(token)
                 .tipo("Bearer")
-                .id(usuario.getId())
-                .email(usuario.getEmail())
-                .nombreUsuario(usuario.getNombreUsuario())
-                .esModerador(usuario.getEsModerador())
+                .id(usuarioGuardado.getId()) // Usamos el ID real de la BD
+                .email(usuarioGuardado.getEmail())
+                .nombreUsuario(usuarioGuardado.getNombreUsuario())
+                .esModerador(usuarioGuardado.getEsModerador())
                 .build();
     }
 
