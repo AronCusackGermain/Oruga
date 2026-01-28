@@ -104,7 +104,7 @@ public class JwtService {
 
     private Claims extractAllClaims(String token) {
         return Jwts
-                .parserBuilder()  // ✅ Versión compatible con JJWT 0.12.x
+                .parser()  // ✅ Versión compatible con JJWT 0.12.x
                 .setSigningKey(getSignInKey())  // ✅ setSigningKey funciona aquí
                 .build()
                 .parseClaimsJws(token)
@@ -116,3 +116,4 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }
+
