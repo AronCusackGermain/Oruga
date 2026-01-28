@@ -77,4 +77,23 @@ public class Publicacion {
     public void incrementarComentarios() {
         this.cantidadComentarios++;
     }
+
+    @PrePersist
+    protected void onCreate() {
+        if (imagenUrl == null) {
+            imagenUrl = "";
+        }
+        if (imagenesUrls == null) {
+            imagenesUrls = "";
+        }
+        if (cantidadLikes == null) {
+            cantidadLikes = 0;
+        }
+        if (cantidadComentarios == null) {
+            cantidadComentarios = 0;  // ✅ Esto soluciona el error
+        }
+        if (esAnuncio == null) {
+            esAnuncio = false;
+        }
+    }
 }
