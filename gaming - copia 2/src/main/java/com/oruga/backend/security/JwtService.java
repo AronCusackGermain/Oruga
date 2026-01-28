@@ -52,24 +52,35 @@ public class JwtService {
         Integer cantidadMensajes = 0;
         Integer cantidadPublicaciones = 0;
         Integer cantidadReportes = 0;
+        Boolean esModerador = false;
+        String nombreUsuario = "";
+
         if (userDetails instanceof Usuario) {
             Usuario usuario = (Usuario) userDetails;
             userId = usuario.getId();
             email = usuario.getEmail();
+            nombreUsuario = usuario.getNombreUsuario();
             cantidadMensajes = usuario.getCantidadMensajes() != null ? usuario.getCantidadMensajes() : 0;
-            // ... etc
+            cantidadPublicaciones = usuario.getCantidadPublicaciones() != null ? usuario.getCantidadPublicaciones() : 0;
+            cantidadReportes = usuario.getCantidadReportes() != null ? usuario.getCantidadReportes() : 0;
+            esModerador = usuario.getEsModerador() != null ? usuario.getEsModerador() : false;
         }
+
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(email)
                 .claim("userId", userId)
+                .claim("email", email)
+                .claim("nombreUsuario", nombreUsuario)
                 .claim("cantidadMensajes", cantidadMensajes)
-                // ... más claims
+                .claim("cantidadPublicaciones", cantidadPublicaciones)
+                .claim("cantidadReportes", cantidadReportes)
+                .claim("esModerador", esModerador)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSignInKey())
-                .compact(); // ✅ .compact() retorna String
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
