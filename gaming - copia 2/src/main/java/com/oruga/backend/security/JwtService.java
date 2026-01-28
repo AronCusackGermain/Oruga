@@ -34,6 +34,12 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
+    // ✅ Método sobrecargado para Usuario
+    public String generateToken(Usuario usuario) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        return buildToken(extraClaims, usuario, jwtExpiration);
+    }
+
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
@@ -54,7 +60,7 @@ public class JwtService {
         Integer cantidadReportes = 0;
         Boolean esModerador = false;
         String nombreUsuario = "";
-
+        
         if (userDetails instanceof Usuario) {
             Usuario usuario = (Usuario) userDetails;
             userId = usuario.getId();
@@ -65,7 +71,7 @@ public class JwtService {
             cantidadReportes = usuario.getCantidadReportes() != null ? usuario.getCantidadReportes() : 0;
             esModerador = usuario.getEsModerador() != null ? usuario.getEsModerador() : false;
         }
-
+        
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -98,8 +104,8 @@ public class JwtService {
 
     private Claims extractAllClaims(String token) {
         return Jwts
-                .parser()
-                .setSigningKey(getSignInKey())
+                .parserBuilder()  // ✅ Versión compatible con JJWT 0.12.x
+                .setSigningKey(getSignInKey())  // ✅ setSigningKey funciona aquí
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
