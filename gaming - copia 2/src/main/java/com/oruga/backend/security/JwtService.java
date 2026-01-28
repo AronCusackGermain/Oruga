@@ -2,8 +2,8 @@ package com.oruga.backend.security;
 
 import com.oruga.backend.model.Usuario;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,21 +39,37 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return String.valueOf(buildToken(extraClaims, userDetails, jwtExpiration));
+        return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
-    private JwtBuilder buildToken(Map<String, Object> extraClaims, UserDetails userDetails, Long jwtExpiration) {
-        Usuario usuario = (Usuario) userDetails;
-
-        return Jwts.builder()
+    private String buildToken(
+            Map<String, Object> extraClaims,
+            UserDetails userDetails,
+            long expiration
+    ) {
+        Long userId = null;
+        String email = userDetails.getUsername();
+        Integer cantidadMensajes = 0;
+        Integer cantidadPublicaciones = 0;
+        Integer cantidadReportes = 0;
+        if (userDetails instanceof Usuario) {
+            Usuario usuario = (Usuario) userDetails;
+            userId = usuario.getId();
+            email = usuario.getEmail();
+            cantidadMensajes = usuario.getCantidadMensajes() != null ? usuario.getCantidadMensajes() : 0;
+            // ... etc
+        }
+        return Jwts
+                .builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
-                .claim("userId", usuario.getId())
-                .claim("email", usuario.getEmail())
-                .claim("cantidadMensajes", usuario.getCantidadMensajes() != null ? usuario.getCantidadMensajes() : 0)
-                .claim("cantidadPublicaciones", usuario.getCantidadPublicaciones() != null ? usuario.getCantidadPublicaciones() : 0)
-                .claim("cantidadReportes", usuario.getCantidadReportes() != null ? usuario.getCantidadReportes() : 0);
-          // ... resto del código
+                .setSubject(email)
+                .claim("userId", userId)
+                .claim("cantidadMensajes", cantidadMensajes)
+                // ... más claims
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSignInKey())
+                .compact(); // ✅ .compact() retorna String
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
